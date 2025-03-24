@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Máy Bay Học Toán & Chữ Cái</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="game-ui">
+            <div id="top-ui">
+                <div id="timer"><i class="fas fa-clock"></i> <span>60s</span></div>
+                <div id="level-badge"><i class="fas fa-star"></i> Cấp độ: <span>1</span></div>
+                <div id="score"><i class="fas fa-trophy"></i> Điểm: <span>0</span></div>
+            </div>
+            
+            <div id="center-ui">
+                <div id="question-container">
+                    <div id="question"></div>
+                </div>
+            </div>
+            
+            <div id="bottom-ui">
+                <div id="fuel-container">
+                    <div id="fuel-label">Nhiên liệu</div>
+                    <div id="fuel-bar">
+                        <div id="fuel-level"></div>
+                    </div>
+                </div>
+                <div id="stars-container">
+                    <span class="star" id="star1"><i class="far fa-star"></i></span>
+                    <span class="star" id="star2"><i class="far fa-star"></i></span>
+                    <span class="star" id="star3"><i class="far fa-star"></i></span>
+                </div>
+            </div>
+            
+            <div id="game-controls">
+                <button id="sound-btn" class="control-btn"><i class="fas fa-volume-up"></i></button>
+                <button id="pause-btn" class="control-btn"><i class="fas fa-pause"></i></button>
+                <button id="restart-btn" class="control-btn"><i class="fas fa-redo"></i></button>
+            </div>
+        </div>
+        
+        <div id="start-screen">
+            <div class="screen-content">
+                <h1 class="game-title">Máy Bay Học Toán & Chữ Cái</h1>
+                <div id="plane-selection">
+                    <h3>Chọn máy bay:</h3>
+                    <div class="plane-options">
+                        <div class="plane-option selected" data-plane="1">
+                            <canvas id="plane1" width="100" height="60"></canvas>
+                            <span>Máy bay thường</span>
+                        </div>
+                        <div class="plane-option" data-plane="2">
+                            <canvas id="plane2" width="100" height="60"></canvas>
+                            <span>Phi thuyền</span>
+                            <div class="locked">
+                                <i class="fas fa-lock"></i>
+                                <span>100 điểm</span>
+                            </div>
+                        </div>
+                        <div class="plane-option" data-plane="3">
+                            <canvas id="plane3" width="100" height="60"></canvas>
+                            <span>Siêu máy bay</span>
+                            <div class="locked">
+                                <i class="fas fa-lock"></i>
+                                <span>200 điểm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="mode-selection">
+                    <button class="btn" id="math-mode">Học Toán</button>
+                    <button class="btn" id="letter-mode">Học Chữ Cái</button>
+                </div>
+                <div id="highscore">
+                    <h3>Điểm cao nhất: <span id="highscore-value">0</span></h3>
+                </div>
+                <p class="controls-info">Sử dụng phím mũi tên ⬆️ ⬇️ để di chuyển máy bay và tìm đáp án đúng!</p>
+            </div>
+        </div>
+        
+        <div id="pause-screen">
+            <div class="screen-content">
+                <h2>Tạm Dừng</h2>
+                <button class="btn" id="resume-btn">Tiếp Tục</button>
+                <button class="btn" id="exit-to-menu">Về Menu</button>
+            </div>
+        </div>
+        
+        <div id="level-up-screen">
+            <div class="screen-content">
+                <h2>Lên Cấp!</h2>
+                <div class="level-info">
+                    <h3>Cấp độ <span id="new-level">2</span></h3>
+                    <p id="level-description">Bầu trời hoàng hôn - Nhiều thử thách hơn!</p>
+                </div>
+                <button class="btn" id="continue-btn">Tiếp Tục</button>
+            </div>
+        </div>
+        
+        <div id="game-over-screen">
+            <div class="screen-content">
+                <h1 class="game-title">Game Over!</h1>
+                <h2 id="final-score">Điểm của bạn: <span>0</span></h2>
+                <div id="stars-earned">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3 id="encouragement">Rất tốt! Hãy tiếp tục cố gắng!</h3>
+                <div class="button-row">
+                    <button class="btn" id="play-again">Chơi Lại</button>
+                    <button class="btn" id="change-mode">Đổi Chế Độ</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-controls">
+            <div class="touch-area" id="touch-area"></div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
