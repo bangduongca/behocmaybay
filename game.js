@@ -2214,3 +2214,102 @@ function showStartScreen() {
     document.getElementById("highscore-value").innerText = highScore;
 }
 
+// Thêm vào phần adjustForDevice trong file game.js
+function adjustForDevice() {
+    const isMobile = (window.innerWidth <= 800) || 
+           ('ontouchstart' in window) || 
+           (navigator.maxTouchPoints > 0);
+    
+    if (isMobile) {
+        document.getElementById("mobile-controls").style.display = "block";
+        
+        // Điều chỉnh kích thước canvas dựa trên orientation
+        const isLandscape = window.innerWidth > window.innerHeight;
+        
+        if (isLandscape) {
+            // Điều chỉnh cho chế độ ngang
+            canvas.width = Math.min(800, window.innerWidth);
+            canvas.height = Math.min(600, window.innerHeight);
+        } else {
+            // Điều chỉnh cho chế độ dọc
+            const ratio = 4/3; // tỷ lệ chiều rộng/chiều cao
+            canvas.width = window.innerWidth;
+            canvas.height = canvas.width / ratio;
+            
+            // Đảm bảo không vượt quá chiều cao màn hình
+            if (canvas.height > window.innerHeight * 0.8) {
+                canvas.height = window.innerHeight * 0.8;
+                canvas.width = canvas.height * ratio;
+            }
+        }
+    } else {
+        document.getElementById("mobile-controls").style.display = "none";
+        canvas.width = 800;
+        canvas.height = 600;
+    }
+    
+    // Redraw nếu game đang chạy
+    if (gameStarted && !gamePaused && !gameOver) {
+        drawBackground();
+        drawPlane();
+        moveAndDrawAnswers();
+    }
+}
+
+// Thêm listener cho sự kiện xoay màn hình
+window.addEventListener("orientationchange", function() {
+    setTimeout(adjustForDevice, 100); // Delay để đảm bảo màn hình đã xoay xong
+});
+
+// Thay đổi xử lý touch trong file game.js
+function setupTouchControls() {
+    const touchArea = document.getElementById("touch-area");
+    
+    // Xóa những event listener cũ nếu có
+    touchArea.removeEventListener("touchstart", handleTouch);
+    touchArea.removeEventListener("touchmove", handleTouch);
+    touchArea.removeEventListener("touchend", handleTouchEnd);
+    
+    // Thêm event listener mới
+    touchArea.addEventListener("touchstart", handleTouch);
+    touchArea.addEventListener("touchmove", handleTouch);
+    touchArea.addEventListener("touchend", handleTouchEnd);
+}
+
+function handleTouch(e) {
+    e.preventDefault();
+    if (gameStarted && !gameOver && !gamePaused) {
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        const planeCenter = plane.y + plane.height/2;
+        
+        // Di chuyển máy bay dựa vào vị trí chạm
+        if (touchY < planeCenter - 20) {
+            plane.moving = -1;
+        } else if (touchY > planeCenter + 20) {
+            plane.moving = 1;
+        } else {
+            plane.moving = 0;
+        }
+    }
+}
+
+function handleTouchEnd(e) {
+    e.preventDefault();
+    plane.moving = 0;
+}
+
+// Thêm gọi setupTouchControls() vào trong window.onload
+
+// Thêm hàm này và gọi nó mỗi khi adjustForDevice được gọi
+function adjustUIPositions() {
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const centerUI = document.getElementById("center-ui");
+    
+    if (isLandscape) {
+        centerUI.style.top = "25%";
+    } else {
+        centerUI.style.top = "15%";
+    }
+}
